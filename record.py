@@ -67,8 +67,18 @@ def record(directory, cam_port, processes):
         output_file
     ]
     
+    command_rtsp = [
+        'ffmpeg',
+        '-t', duration,
+        '-i', 'rtsp://{0}:{1}@{2}:{3}/play1.sdp'.format(user, passwd, domain, 554),
+        output_file
+    ]
+    
     if cam_port == 82:
         process = subprocess.Popen(command_mjpeg)
+        processes.append(process)
+    elif cam_port == 83:
+        process = subprocess.Popen(command_rtsp)
         processes.append(process)
     else:
         process = subprocess.Popen(command_h264)
